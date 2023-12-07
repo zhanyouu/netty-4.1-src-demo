@@ -7,7 +7,7 @@
         <version>4.1.102.Final-SNAPSHOT</version>
     </parent>
 
-    <groupId>org.example</groupId>
+    <groupId>io.netty</groupId>
     <artifactId>zhanyou-demo</artifactId>
     <packaging>jar</packaging>
 
@@ -22,7 +22,7 @@
         <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-all</artifactId>
-            <version>4.1.102.Final-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
