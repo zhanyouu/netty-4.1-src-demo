@@ -1,12 +1,11 @@
 package org.netty.server;
 
 import io.netty.bootstrap.ServerBootstrap;
+import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-
-import java.net.InetSocketAddress;
-
+import io.netty.channel.socket.nio.NioSocketChannel;
 
 public class NettyServer {
     private static final int PORT = 9999;
@@ -14,7 +13,7 @@ public class NettyServer {
 
     public static void main(String[] args) throws InterruptedException {
         ServerBootstrap bootstrap = bootstrap();
-        bootstrap.bind().sync();
+        bootstrap.bind(PORT).sync();
     }
 
     public static ServerBootstrap bootstrap() {
@@ -23,11 +22,15 @@ public class NettyServer {
         ServerBootstrap bootstrap = new ServerBootstrap();
         bootstrap.group(boosGroup, workerGroup)
                 .channel(NioServerSocketChannel.class)
-                .localAddress(new InetSocketAddress(PORT))/*指定服务器监听端口*/
                 .childOption(ChannelOption.CONNECT_TIMEOUT_MILLIS, 5000)
                 .childOption(ChannelOption.SO_KEEPALIVE, true)
                 .childOption(ChannelOption.TCP_NODELAY, true)
-                .childHandler(new ServerHandler());
+                .childHandler(new ChannelInitializer<NioSocketChannel>() {
+                    @Override
+                    protected void initChannel(NioSocketChannel ch) {
+                        ch.pipeline().addLast(new ServerHandler());
+                    }
+                });
                 return bootstrap;
     }
 

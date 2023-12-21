@@ -2,10 +2,10 @@ package org.netty.client;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
-
 import java.net.InetSocketAddress;
 
 public class NettyClient {
@@ -16,7 +16,7 @@ public class NettyClient {
     public static void main(String[] args) throws InterruptedException {
         Bootstrap bootstrap = NettyClient.bootstrap();
         /*连接到远程节点，阻塞直到连接完成*/
-        ChannelFuture f = bootstrap.connect().sync();
+        ChannelFuture f = bootstrap.connect(new InetSocketAddress(HOST,PORT)).sync();
         /*阻塞程序，直到Channel发生了关闭*/
         f.channel().closeFuture().sync();
     }
@@ -27,11 +27,15 @@ public class NettyClient {
         Bootstrap bootstrap = new Bootstrap();
         bootstrap.group(workerGroup)
                 .channel(NioSocketChannel.class)
-                .remoteAddress(new InetSocketAddress(HOST, PORT))
                 .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 5000)
                 .option(ChannelOption.SO_KEEPALIVE, true)
                 .option(ChannelOption.TCP_NODELAY, true)
-                .handler(new ClientHandler());
+                .handler(new ChannelInitializer<NioSocketChannel>() {
+                    @Override
+                    protected void initChannel(NioSocketChannel ch) {
+                        ch.pipeline().addLast(new ClientHandler());
+                    }
+                });
         return bootstrap;
     }
 }
