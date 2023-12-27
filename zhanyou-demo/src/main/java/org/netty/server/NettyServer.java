@@ -6,7 +6,8 @@ import io.netty.channel.ChannelOption;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import org.netty.codec.MessageCodec;
+import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
+import org.netty.protocal.codec.MessageCodec;
 
 public class NettyServer {
     private static final int PORT = 9999;
@@ -29,6 +30,7 @@ public class NettyServer {
                 .childHandler(new ChannelInitializer<NioSocketChannel>() {
                     @Override
                     protected void initChannel(NioSocketChannel ch) {
+                        ch.pipeline().addLast(new LengthFieldBasedFrameDecoder(1024,12,4,0,0));
                         ch.pipeline().addLast(new MessageCodec());
                         ch.pipeline().addLast(new ServerHandler());
                     }
