@@ -5,6 +5,7 @@ import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.util.CharsetUtil;
+import org.netty.message.Message;
 
 import java.util.Optional;
 
@@ -20,8 +21,9 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
-        ByteBuf byteBuf = (ByteBuf) msg;
-        System.out.println("服务端接收:" + byteBuf.toString(CharsetUtil.UTF_8));
-        ctx.writeAndFlush(Unpooled.copiedBuffer("你好，我是服务端，我已经收到你发送的消息", CharsetUtil.UTF_8));
+        Message message = (Message) msg;
+        System.out.println("服务端接收:" + message);
+        message.setId("2");
+        ctx.writeAndFlush(message);
     }
 }

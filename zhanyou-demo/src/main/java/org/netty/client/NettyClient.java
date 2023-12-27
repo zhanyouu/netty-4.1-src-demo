@@ -6,6 +6,8 @@ import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import org.netty.codec.MessageCodec;
+
 import java.net.InetSocketAddress;
 
 public class NettyClient {
@@ -33,6 +35,7 @@ public class NettyClient {
                 .handler(new ChannelInitializer<NioSocketChannel>() {
                     @Override
                     protected void initChannel(NioSocketChannel ch) {
+                        ch.pipeline().addLast(new MessageCodec());
                         ch.pipeline().addLast(new ClientHandler());
                     }
                 });
