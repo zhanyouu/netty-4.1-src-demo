@@ -73,6 +73,5 @@ public class MessageCodec extends ByteToMessageCodec<Message> {
         in.readBytes(bytes, 0, length);
         Message message = serializerMap.get(serializeType).deserialize(messageTypeMap.get(messageType), bytes);
         out.add(message);
-        System.out.println(message);
     }
 }

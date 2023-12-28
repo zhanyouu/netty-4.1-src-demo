@@ -14,9 +14,6 @@ public class ClientHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelActive(ChannelHandlerContext ctx) {
         RpcRequest request= new RpcRequest();
-        request.setVersion((byte) 1);
-        request.setSerializeType((byte) 1);
-        request.setSequenceId(1);
         request.setContent("请求内容！");
         ctx.writeAndFlush(request);
     }

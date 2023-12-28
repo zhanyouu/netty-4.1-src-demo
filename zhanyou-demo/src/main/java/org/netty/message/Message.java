@@ -6,7 +6,14 @@ import lombok.ToString;
 @Data
 @ToString
 public abstract class Message {
-    private int sequenceId;
+    /**
+     * 魔数
+     */
+    private byte[] magicNum = new byte[]{1,2,3,4};
+    /**
+     * 序号
+     */
+    private int sequenceId = 1;
     /**
      * 协议版本
      */
@@ -14,7 +21,7 @@ public abstract class Message {
     /**
      * 序列化方式
      */
-    private Byte serializeType;
+    private Byte serializeType = 1;
     /**
      * 指令
      */

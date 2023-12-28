@@ -2,6 +2,7 @@ package org.netty.server;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import org.netty.message.RpcRequest;
+import org.netty.message.RpcResponse;
 
 import java.util.Optional;
 
@@ -17,11 +18,10 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
-        RpcRequest message = (RpcRequest) msg;
-        System.out.println("服务端接收:" + message);
-        message.setSerializeType((byte) 1);
-        message.setVersion((byte) 1);
-        message.setSequenceId(1);
-        ctx.writeAndFlush(message);
+        System.out.println("服务端接收:" + msg);
+        RpcResponse response = new RpcResponse();
+        response.setSuccess(true);
+        response.setValue("收到到了您的消息！");
+        ctx.writeAndFlush(response);
     }
 }
