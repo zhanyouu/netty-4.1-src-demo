@@ -7,7 +7,7 @@ import lombok.ToString;
 @ToString
 public class RpcResponse extends Message{
     private Boolean success;
-    private String value;
+    private Object value;
     @Override
     public int getMessageType() {
         return RPC_RESPONSE;
